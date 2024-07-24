@@ -1,6 +1,4 @@
-# Build & Deploy Ứng dụng ghi chú (React, NodeJS, GraphQL, MongoDB, Firebase)
-
-Phần UI sử dụng ReactJS và Material UI, phần backend sẽ sử dụng NodeJS. Cấu hình GraphQL server và thao tác dữ liệu trong MongoDB.
+# Ứng dụng ghi chú (React, Material UI, NodeJS, GraphQL, MongoDB, Firebase)
 
 👉 Tính năng
 

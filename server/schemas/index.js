@@ -20,11 +20,12 @@ export const typeDefs = `#graphql
   type Query {
     folders: [Folder],
     folder(folderId: String!): Folder,
-    note(noteId: String): Note
+    note(noteId: String!): Note
   }
 
   type Mutation {
     addFolder(name: String!): Folder,
+    addNote(content: String!, folderId: ID!): Note,
     register(uid: String!, name: String!): Author
   }
 `

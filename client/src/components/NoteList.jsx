@@ -1,11 +1,33 @@
-import { CardContent, Grid, List, Card, Typography, Box } from '@mui/material'
-import { useState } from 'react'
-import { Link, Outlet, useLoaderData, useParams } from 'react-router-dom'
+import { CardContent, Grid, List, Card, Typography, Box, Tooltip, IconButton } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { NoteAddOutlined } from '@mui/icons-material'
+import { Link, Outlet, useLoaderData, useParams, useSubmit, useNavigate } from 'react-router-dom'
 
 export default function NoteList() {
-  const { noteId } = useParams()
+  const { noteId, folderId } = useParams()
   const [activeNoteId, setActiveNoteId] = useState(noteId)
   const { folder } = useLoaderData()
+  const submit = useSubmit()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (noteId) {
+      setActiveNoteId(noteId)
+      return
+    }
+
+    if (folder?.notes?.[0]) {
+      navigate(`note/${folder.notes[0].id}`)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [noteId, folder.notes])
+
+  const handleAddNewNote = () => {
+    submit({
+      content: '',
+      folderId
+    }, { method: 'POST', action: `/folders/${folderId}` })
+  }
 
   return (
     <Grid container sx={{ height: '100%' }}>
@@ -23,8 +45,17 @@ export default function NoteList() {
       >
         <List
           subheader={
-            <Box>
+            <Box sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between'
+            }}>
               <Typography sx={{ fontWeight: 'bold' }}>Notes</Typography>
+              <Tooltip title="Add Note" onClick={handleAddNewNote}>
+                <IconButton size='small'>
+                  <NoteAddOutlined />
+                </IconButton>
+              </Tooltip>
             </Box>
           }
         >
