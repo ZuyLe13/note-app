@@ -1,6 +1,7 @@
-import { CardContent, Grid, List, Card, Typography, Box, Tooltip, IconButton } from '@mui/material'
 import { useEffect, useState } from 'react'
+import moment from 'moment'
 import { NoteAddOutlined } from '@mui/icons-material'
+import { CardContent, Grid, List, Card, Typography, Box, Tooltip, IconButton } from '@mui/material'
 import { Link, Outlet, useLoaderData, useParams, useSubmit, useNavigate } from 'react-router-dom'
 
 export default function NoteList() {
@@ -60,7 +61,7 @@ export default function NoteList() {
           }
         >
           {
-            folder.notes.map(({ id, content }) => {
+            folder.notes.map(({ id, content, updatedAt }) => {
               return (
                 <Link
                   key={id}
@@ -89,6 +90,9 @@ export default function NoteList() {
                           __html: `${content.substring(0, 30) || 'Empty'}`
                         }}
                       />
+                      <Typography sx={{ fontSize: '10px' }}>
+                        {moment(updatedAt).format('MMMM Do YYYY, h:mm:ss a')}
+                      </Typography>
                     </CardContent>
                   </Card>
                 </Link>

@@ -8,6 +8,7 @@ export const notesLoader = async ({ params: { folderId } }) => {
       notes {
         id
         content
+        updatedAt
       }
     }
   }`
@@ -25,8 +26,8 @@ export const notesLoader = async ({ params: { folderId } }) => {
 export const noteLoader = async ({ params: { noteId } }) => {
   const query = `query Note($noteId: String!) {
     note(noteId: $noteId) {
-      content
       id
+      content
     }
   }`
 
