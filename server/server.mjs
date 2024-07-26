@@ -1,16 +1,19 @@
 import 'dotenv/config'
 import cors from 'cors'
 import http from 'http'
+import './firebaseConfig.js'
 import express from 'express'
-import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
+import bodyParser from 'body-parser'
 import { ApolloServer } from '@apollo/server'
 import { typeDefs } from './schemas/index.js'
 import { resolvers } from './resolver/index.js'
 import { expressMiddleware } from '@apollo/server/express4'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 import { getAuth } from 'firebase-admin/auth'
-import './firebaseConfig.js'
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import { WebSocketServer } from 'ws';
+import { useServer } from 'graphql-ws/lib/use/ws';
 
 const app = express()
 const httpServer = http.createServer(app)
@@ -18,10 +21,40 @@ const httpServer = http.createServer(app)
 const PORT = process.env.PORT || 4000
 const URI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@note-app.rrqyphc.mongodb.net/?retryWrites=true&w=majority&appName=note-app`
 
+const schema = makeExecutableSchema({ typeDefs, resolvers })
+
+// Creating the WebSocket server
+const wsServer = new WebSocketServer({
+  // This is the `httpServer` we created in a previous step.
+  server: httpServer,
+  // Pass a different path here if app.use
+  // serves expressMiddleware at a different path
+  path: '/graphql',
+});
+
+// Hand in the schema we just created and have the
+// WebSocketServer start listening.
+const serverCleanup = useServer({ schema }, wsServer);
+
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
+  // typeDefs,
+  // resolvers,
+  schema,
+  plugins: [
+    // Proper shutdown for the HTTP server.
+    ApolloServerPluginDrainHttpServer({ httpServer }),
+
+    // Proper shutdown for the WebSocket server.
+    {
+      async serverWillStart() {
+        return {
+          async drainServer() {
+            await serverCleanup.dispose();
+          },
+        };
+      },
+    },
+  ],
 })
 
 await server.start()
@@ -41,7 +74,8 @@ const authorizationJWT = async (req, res, next) => {
         return res.status(403).json({ message: 'Forbidden', error: err })
       })
   } else {
-    return res.status(401).json({ message: 'Unauthorized' })
+    // return res.status(401).json({ message: 'Unauthorized' })
+    next()
   }
 }
 

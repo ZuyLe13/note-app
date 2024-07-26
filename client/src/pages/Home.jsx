@@ -3,6 +3,7 @@ import { Box } from '@mui/system'
 import { Outlet, useLoaderData } from 'react-router-dom'
 import FolderList from '../components/FolderList'
 import UserMenu from '../components/UserMenu'
+import PushNotification from '../components/PushNotification'
 
 export default function Home() {
   const { folders } = useLoaderData()
@@ -14,6 +15,7 @@ export default function Home() {
       </Typography>
       <Box sx={{ display: 'flex', justifyContent: 'right', mb: '10px' }}>
         <UserMenu />
+        <PushNotification />
       </Box>
 
       <Grid
