@@ -1,12 +1,15 @@
-import { useEffect, useState } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useMemo, useState } from 'react'
 import { ContentState, convertFromHTML, convertToRaw, EditorState } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
 import draftToHtml from 'draftjs-to-html'
-import { useLoaderData } from 'react-router-dom'
+import { useLoaderData, useLocation, useSubmit } from 'react-router-dom'
+import { debounce } from '@mui/material'
 
 export default function Note() {
   const { note } = useLoaderData()
-
+  const submit = useSubmit()
+  const location = useLocation()
   const [editorState, setEditorState] = useState(() => {
     return EditorState.createEmpty()
   })
@@ -20,6 +23,22 @@ export default function Note() {
     )
     setEditorState(EditorState.createWithContent(state))
   }, [note.id])
+
+  useEffect(() => {
+    debounceMemorized(rawHTML, note, location.pathname)
+  }, [rawHTML, location.pathname])
+
+  // Kỹ thuật debounce
+  const debounceMemorized = useMemo(() => {
+    return debounce((rawHTML, note, pathname) => {
+      if (rawHTML === note.content) return
+
+      submit({ ...note, content: rawHTML }, {
+        method: 'POST',
+        action: pathname
+      })
+    }, 1000)
+  }, [])
 
   useEffect(() => {
     setRawHTML(note.content)

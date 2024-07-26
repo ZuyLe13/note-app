@@ -44,7 +44,6 @@ export const addNewNote = async ({ params, request }) => {
   const formDataObj = {}
   newNote.forEach((value, key) => (formDataObj[key] = value))
 
-  console.log('🚀 ~ addNewNote ~ newNote:', { newNote, formDataObj })
   const query = `mutation Mutation($content: String!, $folderId: ID!) {
     addNote(content: $content, folderId: $folderId) {
       id
@@ -57,7 +56,25 @@ export const addNewNote = async ({ params, request }) => {
     variables: formDataObj
   })
 
-  console.log({ addNote })
-
   return addNote
+}
+
+export const updateNote = async ({ params, request }) => {
+  const updatedNote = await request.formData()
+  const formDataObj = {}
+  updatedNote.forEach((value, key) => (formDataObj[key] = value))
+
+  const query = `mutation Mutation($id: String!, $content: String!) {
+    updateNote(id: $id, content: $content) {
+      id
+      content
+    }
+  }`
+
+  const { updateNote } = await graphQLRequest({
+    query,
+    variables: formDataObj
+  })
+
+  return updateNote
 }
