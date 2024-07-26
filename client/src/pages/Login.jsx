@@ -1,14 +1,11 @@
 /* eslint-disable quotes */
 import { Button, Typography } from '@mui/material'
 import { GoogleAuthProvider, signInWithPopup, getAuth } from 'firebase/auth'
-import { useContext } from 'react'
-import { AuthContext } from '../context/AuthProvider'
 import { Navigate } from 'react-router-dom'
 import { graphQLRequest } from '../utils/request'
 
 export default function Login() {
   const auth = getAuth()
-  const { user } = useContext(AuthContext)
 
   const handleLoginWithGoogle = async () => {
     const provider = new GoogleAuthProvider()
@@ -29,8 +26,6 @@ export default function Login() {
         name: displayName
       }
     })
-
-    console.log('Register', { data })
   }
 
   if (localStorage.getItem('accessToken')) {

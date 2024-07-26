@@ -14,7 +14,7 @@ export const foldersLoader = async () => {
 }
 
 export const addNewFolder = async (newFolder) => {
-  const query = `mutation Mutaion($name: String!) {
+  const query = `mutation Mutation($name: String!) {
     addFolder(name: $name) {
       name
       author {
@@ -25,9 +25,7 @@ export const addNewFolder = async (newFolder) => {
 
   const data = await graphQLRequest({
     query,
-    variables: {
-      name: newFolder.name
-    }
+    variables: { name: newFolder.name }
   })
 
   return data

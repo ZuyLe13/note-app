@@ -6,14 +6,14 @@ export const graphQLRequest = async (payload, options) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
+        Accept: 'application/json',
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         ...options
       },
       body: JSON.stringify(payload)
     })
 
-    if (res.ok) {
+    if (!res.ok) {
       if (res.status === 403) return null
     }
 

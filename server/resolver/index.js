@@ -34,7 +34,6 @@ export const resolvers = {
       return note
     }
   },
-
   Folder: {
     author: async (parent, args) => {
       const authorId = parent.authorId
@@ -52,7 +51,6 @@ export const resolvers = {
       return notes
     }
   },
-
   Mutation: {
     addNote: async (parent, args) => {
       const newNote = new NoteModel(args)
@@ -82,7 +80,7 @@ export const resolvers = {
         await newUser.save()
         return newUser
       }
-
+      console.log('🚀 ~ register: ~ foundUser:', foundUser)
       return foundUser
     },
     pushNotification: async (parent, args) => {

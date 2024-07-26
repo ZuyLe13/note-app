@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useMemo, useState } from 'react'
-import { ContentState, convertFromHTML, convertToRaw, EditorState } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
 import draftToHtml from 'draftjs-to-html'
-import { useLoaderData, useLocation, useSubmit } from 'react-router-dom'
 import { debounce } from '@mui/material'
+import { ContentState, convertFromHTML, convertToRaw, EditorState } from 'draft-js'
+import { useLoaderData, useLocation, useSubmit } from 'react-router-dom'
 
 export default function Note() {
   const { note } = useLoaderData()
@@ -53,7 +53,7 @@ export default function Note() {
     <Editor
       editorState={editorState}
       onEditorStateChange={handleOnChange}
-      placeholder='Write something!'
+      placeholder='Write something!!!'
     />
   )
 }

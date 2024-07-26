@@ -71,7 +71,7 @@ export default function NoteList() {
                 >
                   <Card
                     sx={{
-                      mb: '5px',
+                      mb: '6px',
                       backgroundColor: id === activeNoteId ? 'rgb(255 211 140)' : null
                     }}
                   >
@@ -83,14 +83,14 @@ export default function NoteList() {
                     >
                       <div
                         style={{
-                          fontSize: 14,
+                          fontSize: 16,
                           fontWeight: 'bold'
                         }}
                         dangerouslySetInnerHTML={{
                           __html: `${content.substring(0, 30) || 'Empty'}`
                         }}
                       />
-                      <Typography sx={{ fontSize: '10px' }}>
+                      <Typography sx={{ fontSize: '12px', mt: '4px' }}>
                         {moment(updatedAt).format('MMMM Do YYYY, h:mm:ss a')}
                       </Typography>
                     </CardContent>

@@ -24,9 +24,7 @@ export default function NewFolder() {
     setNewFolderName(e.target.value)
   }
   const handleAddNewFolder = async () => {
-    const { addFolder } = await addNewFolder({ name: newFolderName })
-    console.log('🚀 ~ handleAddNewFolder ~ addFolder:', addFolder)
-
+    await addNewFolder({ name: newFolderName })
     handleClose()
   }
 
@@ -35,7 +33,6 @@ export default function NewFolder() {
       setOpen(true)
       return
     }
-
     setOpen(false)
   }, [popupName])
 

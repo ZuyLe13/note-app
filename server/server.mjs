@@ -41,10 +41,7 @@ const server = new ApolloServer({
   // resolvers,
   schema,
   plugins: [
-    // Proper shutdown for the HTTP server.
     ApolloServerPluginDrainHttpServer({ httpServer }),
-
-    // Proper shutdown for the WebSocket server.
     {
       async serverWillStart() {
         return {
@@ -64,7 +61,8 @@ const authorizationJWT = async (req, res, next) => {
 
   if (authorizationHeader) {
     const accessToken = authorizationHeader.split(' ')[1]
-    getAuth().verifyIdToken(accessToken)
+    getAuth()
+      .verifyIdToken(accessToken)
       .then(decodedToken => {
         res.locals.uid = decodedToken.uid
         next()
@@ -86,8 +84,10 @@ app.use(cors(), authorizationJWT, bodyParser.json(), expressMiddleware(server, {
 }))
 
 mongoose.set('strictQuery', false)
-mongoose.connect(URI).then(async () => {
-  console.log('🚀 Successfully connected to MongoDB!')
-  await new Promise(resolve => httpServer.listen({ port: PORT }, resolve))
-  console.log(`🚀 Server ready at http://localhost:${PORT}`)
-})
+mongoose
+  .connect(URI)
+  .then(async () => {
+    console.log('🚀 Successfully connected to MongoDB!')
+    await new Promise(resolve => httpServer.listen({ port: PORT }, resolve))
+    console.log(`🚀 Server ready at http://localhost:${PORT}`)
+  })

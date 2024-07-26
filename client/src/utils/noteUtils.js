@@ -15,9 +15,7 @@ export const notesLoader = async ({ params: { folderId } }) => {
 
   const data = await graphQLRequest({
     query,
-    variables: {
-      folderId
-    }
+    variables: { folderId }
   })
 
   return data
@@ -33,10 +31,9 @@ export const noteLoader = async ({ params: { noteId } }) => {
 
   const data = await graphQLRequest({
     query,
-    variables: {
-      noteId
-    }
+    variables: { noteId }
   })
+
   return data
 }
 
