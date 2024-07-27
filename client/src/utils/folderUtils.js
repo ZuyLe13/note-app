@@ -30,3 +30,18 @@ export const addNewFolder = async (newFolder) => {
 
   return data
 }
+
+export const deleteFolder = async (folderId) => {
+  const query = `mutation Mutation($folderId: ID!) {
+    deleteFolder(folderId: $folderId) {
+      id
+    }
+  }`
+
+  const data = await graphQLRequest({
+    query,
+    variables: { folderId }
+  })
+
+  return data
+}

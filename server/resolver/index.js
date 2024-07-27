@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from 'graphql'
+import { GraphQLScalarType, subscribe } from 'graphql'
 import { AuthorModel, FolderModel, NoteModel, NotificationModel } from '../models/index.js'
 import { PubSub } from 'graphql-subscriptions';
 
@@ -72,6 +72,12 @@ export const resolvers = {
       await newFolder.save()
       return newFolder
     },
+    deleteFolder: async (parent, args) => {
+      await NoteModel.deleteMany({ folderId: args.folderId })
+      const deletedFolder = await FolderModel.findByIdAndDelete(args.folderId)
+
+      return deletedFolder
+    },
     register: async (parent, args) => {
       const foundUser = new AuthorModel.findOne({ uid: args.uid })
 
@@ -103,6 +109,9 @@ export const resolvers = {
     },
     notification: {
       subscribe: () => pubsub.asyncIterator(['PUSH_NOTIFICATION'])
+    },
+    folderDeleted: {
+      subscribe: () => pubsub.asyncIterator(['FOLDER_DELETED'])
     }
   }
 }

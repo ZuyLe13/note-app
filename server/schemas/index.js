@@ -28,6 +28,7 @@ export const typeDefs = `#graphql
 
   type Mutation {
     addFolder(name: String!): Folder,
+    deleteFolder(folderId: ID!): Folder
     addNote(content: String!, folderId: ID!): Note,
     updateNote(id: String!, content: String!): Note,
     register(uid: String!, name: String!): Author,
@@ -41,5 +42,6 @@ export const typeDefs = `#graphql
   type Subscription {
     folderCreated: Message
     notification: Message
+    folderDeleted: Message
   }
 `

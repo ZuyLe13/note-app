@@ -1,15 +1,18 @@
 import { useState } from 'react'
 import NewFolder from './NewFolder'
-import { Link, useParams } from 'react-router-dom'
+import { deleteFolder } from '../utils/folderUtils'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { Box, Card, CardContent, List, Typography } from '@mui/material'
 
 export default function FolderList({ folders }) {
   const { folderId } = useParams()
   const [activeFolderId, setActiveFolderId] = useState(folderId)
+  const navigate = useNavigate()
 
-  const handleClick = () => {
-    console.log(123)
+  const handleDeleteFolder = async () => {
+    await deleteFolder(folderId)
+    navigate('/')
   }
 
   return (
@@ -37,45 +40,64 @@ export default function FolderList({ folders }) {
     >
       {folders.map(({ id, name }) => {
         return (
-          <Link
+          <Box
             key={id}
-            to={`folders/${id}`}
-            style={{
-              textDecoration: 'none'
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              '&:hover': {
+                '& .delete-icon': {
+                  display: 'block'
+                }
+              }
             }}
-            onClick={() => setActiveFolderId(id)}
           >
-            <Card
-              sx={{
-                mb: '5px',
-                backgroundColor: id === activeFolderId ? 'rgb(255 211 140)' : null
+            <Link
+              to={`folders/${id}`}
+              onClick={() => setActiveFolderId(id)}
+              style={{
+                textDecoration: 'none',
+                width: '100%'
               }}
             >
-              <CardContent
+              <Card
                 sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  '&:last-child': { pb: '10px' },
-                  padding: '10px',
-                  '&:hover': {
-                    '& .delete-icon': {
-                      display: 'block'
-                    }
-                  }
+                  mb: '5px',
+                  backgroundColor: id === activeFolderId ? 'rgb(255 211 140)' : null
                 }}
               >
-                <Typography sx={{ fontSize: 16, fontWeight: 'bold' }}>{name}</Typography>
-                <DeleteIcon
-                  color='error'
-                  className="delete-icon"
-                  sx={{ display: 'none' }}
-                  onClick={handleClick}
-                />
-              </CardContent>
-
-            </Card>
-
-          </Link>
+                <CardContent
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    '&:last-child': { pb: '10px' },
+                    padding: '10px'
+                  }}
+                >
+                  <Typography sx={{ fontSize: 16, fontWeight: 'bold' }}>{name}</Typography>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link
+              to="/"
+              style={{
+                position: 'absolute',
+                right: 16,
+                padding: 1
+              }}
+            >
+              <DeleteIcon
+                color='error'
+                className="delete-icon"
+                sx={{
+                  display: 'none',
+                  cursor: 'pointer'
+                }}
+                onClick={handleDeleteFolder}
+              />
+            </Link>
+          </Box>
         )
       })}
     </List>

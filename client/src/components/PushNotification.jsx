@@ -35,24 +35,42 @@ export default function PushNotification() {
 
   useEffect(() => {
     (async () => {
-      const subscription = client.iterate({
-        query
-      })
-      for await (const event of subscription) {
+      const onNext = (data) => {
         setInvisible(false)
 
-        const message = event?.data?.notification?.message
+        const message = data?.data?.notification?.message
         setNotification(message)
-        break
+        console.log('[PUSH NOTIFICATION]', { data })
       }
-    })()
 
+      await new Promise((resolve, reject) => {
+        client.subscribe(
+          {
+            query
+          },
+          {
+            next: onNext,
+            error: reject,
+            complete: resolve
+          }
+        )
+      })
+    })()
   }, [])
 
   return (
     <>
-      <Badge color='primary' variant='dot' invisible={invisible}>
-        <NotificationsIcon onClick={handleClick} />
+      <Badge
+        color='primary'
+        variant='dot'
+        invisible={invisible}
+        overlap='circular'
+        sx={{ '&:hover': { cursor: 'pointer' }, ml: '5px' }}
+      >
+        <NotificationsIcon
+          onClick={handleClick}
+          sx={{ color: '#7D9D9C' }}
+        />
       </Badge>
       <Menu
         anchorEl={anchorEl}

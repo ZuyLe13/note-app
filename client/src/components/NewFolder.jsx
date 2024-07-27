@@ -54,7 +54,7 @@ export default function NewFolder() {
             autoFocus
             margin='dense'
             id='name'
-            label='Folder Nam'
+            label='Folder Name'
             fullWidth
             size='small'
             variant='standard'
