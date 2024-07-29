@@ -1,8 +1,9 @@
 /* eslint-disable quotes */
-import { Button, Typography } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import { GoogleAuthProvider, signInWithPopup, getAuth } from 'firebase/auth'
 import { Navigate } from 'react-router-dom'
 import { graphQLRequest } from '../utils/request'
+import imageFile from '../assets/img.jpg'
 
 export default function Login() {
   const auth = getAuth()
@@ -14,7 +15,7 @@ export default function Login() {
       user: { uid, displayName }
     } = await signInWithPopup(auth, provider)
 
-    const { data } = await graphQLRequest({
+    await graphQLRequest({
       query: `mutation register($uid: String!, $name: String!) {
         register(uid: $uid, name: $name) {
           uid
@@ -33,13 +34,32 @@ export default function Login() {
   }
 
   return (
-    <>
-      <Typography variant="h5" sx={{ marginBottom: '10px' }}>
+    <Box sx={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'column',
+      height: '100vh',
+      backgroundImage: `url(${imageFile})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }}>
+      <Typography
+        variant="h4"
+        sx={{
+          mb: 1,
+          color: 'white',
+          textTransform: 'uppercase'
+        }}
+      >
         Welcome to Note App
       </Typography>
-      <Button variant="outlined" onClick={handleLoginWithGoogle}>
+      <Button
+        size="large"
+        variant="contained"
+        onClick={handleLoginWithGoogle}>
         Login with Google
       </Button>
-    </>
+    </Box>
   )
 }

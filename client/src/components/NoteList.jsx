@@ -41,7 +41,8 @@ export default function NoteList() {
           height: '100%',
           overflowY: 'auto',
           padding: '10px',
-          textAlign: 'left'
+          textAlign: 'left',
+          '&::-webkit-scrollbar-track': { m: 1 }
         }}
       >
         <List
@@ -75,12 +76,7 @@ export default function NoteList() {
                       backgroundColor: id === activeNoteId ? 'rgb(255 211 140)' : null
                     }}
                   >
-                    <CardContent
-                      sx={{
-                        '&:last-child': { pb: '10px' },
-                        padding: '10px'
-                      }}
-                    >
+                    <CardContent sx={{ '&:last-child': { pb: '10px' }, padding: '10px' }} >
                       <div
                         style={{
                           fontSize: 16,

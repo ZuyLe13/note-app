@@ -79,14 +79,15 @@ export const resolvers = {
       return deletedFolder
     },
     register: async (parent, args) => {
-      const foundUser = new AuthorModel.findOne({ uid: args.uid })
+      const foundUser = await AuthorModel.findOne({ uid: args.uid })
 
       if (!foundUser) {
         const newUser = new AuthorModel(args)
         await newUser.save()
         return newUser
       }
-      console.log('🚀 ~ register: ~ foundUser:', foundUser)
+      console.log(1)
+
       return foundUser
     },
     pushNotification: async (parent, args) => {

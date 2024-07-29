@@ -61,7 +61,7 @@ const authorizationJWT = async (req, res, next) => {
 
   if (authorizationHeader) {
     const accessToken = authorizationHeader.split(' ')[1]
-    getAuth()
+    await getAuth()
       .verifyIdToken(accessToken)
       .then(decodedToken => {
         res.locals.uid = decodedToken.uid

@@ -1,6 +1,6 @@
 import { GRAPHQL_SERVER } from './constants'
 
-export const graphQLRequest = async (payload, options) => {
+export const graphQLRequest = async (payload, options = {}) => {
   if (localStorage.getItem('accessToken')) {
     const res = await fetch(`${GRAPHQL_SERVER}/graphql`, {
       method: 'POST',

@@ -23,7 +23,7 @@ export default function UserMenu() {
   return (
     <>
       <Box
-        sx={{ display: 'flex' }}
+        sx={{ display: 'flex', cursor: 'pointer' }}
         onClick={handleClick}
       >
         <Typography>{displayName}</Typography>

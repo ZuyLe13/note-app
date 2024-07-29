@@ -11,7 +11,7 @@ import { RouterProvider } from 'react-router-dom'
 import '../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <Container maxWidth="lg" sx={{ textAlign: 'center', marginTop: '50px' }}>
+  <Container maxWidth="xl" sx={{ p: '0 !important' }}>
     <RouterProvider router={router} />
   </Container>
 )

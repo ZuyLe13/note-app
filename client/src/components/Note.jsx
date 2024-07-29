@@ -54,6 +54,7 @@ export default function Note() {
       editorState={editorState}
       onEditorStateChange={handleOnChange}
       placeholder='Write something!!!'
+      editorStyle={{ marginLeft: '12px' }}
     />
   )
 }
